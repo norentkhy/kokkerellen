@@ -1,9 +1,21 @@
 import React, { useState } from 'react'
-import logo from './logo.svg'
+import logo from '../public/logo.svg'
 import './App.css'
+//@ts-ignore: virtual module is missing from types
+import { useRegisterSW } from 'virtual:pwa-register/react';
+
+const intervalMS = 60 * 60 * 1000
 
 function App() {
   const [count, setCount] = useState(0)
+
+  const updateServiceWorker = useRegisterSW({
+    onRegistered(r: any) {
+      r && setInterval(() => {
+        r.update()
+      }, intervalMS)
+    }
+  })
 
   return (
     <div className="App">
